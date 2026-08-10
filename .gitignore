@@ -1,0 +1,20 @@
+# 编辑器与系统文件
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Android / Gradle（代码结构确定后仍适用）
+.gradle/
+**/build/
+local.properties
+.cxx/
+.externalNativeBuild/
+
+# 本地实验与密钥
+.scratch/
+*.jks
+*.keystore
+.env
+.env.*
