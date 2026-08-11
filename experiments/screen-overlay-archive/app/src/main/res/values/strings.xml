@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GTP 屏幕翻译</string>
+    <string name="notification_channel_name">屏幕翻译</string>
+    <string name="notification_title">GTP 屏幕翻译运行中</string>
+    <string name="notification_text">正在本地识别屏幕中的日文</string>
+</resources>

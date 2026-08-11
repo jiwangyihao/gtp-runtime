@@ -1,13 +1,14 @@
-# 下一轮身份基线复现与观测
+# 完整系统与 AVD 机制基线归档
 
 ## 结论边界
 
-本文记录两条彼此独立的 AVD 观测：
+本文记录三条彼此独立的 AVD 观测：
 
-1. 纯 AOSP x86_64 上的 **synthetic client → 未修改 microG 独立 Binder 基线**；
-2. Google APIs x86_64 + `libndk_translation` 上的 **目标 arm64 split 安装/启动能力**。
+1. 纯 AOSP 36.0 x86_64 上的 **synthetic client → 未修改 microG 独立 Binder 基线**；
+2. 原始 Google APIs 36.1 x86_64 + `libndk_translation` 上的 **目标 arm64 split 安装/启动能力**；
+3. 官方 SDK 包清单与两份镜像构建身份的 **不可拼接性检查**。
 
-二者不能拼接成一次有效 Stage 0：前者不能运行目标 APK，后者因预装 Google 特权包不能无冲突安装冻结 microG。Stage 0A/0B 均未因此通过。
+三者不能拼接成一次有效 Stage 0：第一条不能运行目标 APK，第二条因预装 Google 包不能安装冻结 microG，第三条证明两份 system 镜像不是同一构建且 SDK 仓库没有纯 AOSP 36.1 x86_64。Stage 0A/0B 均未因此通过。
 
 ## 冻结输入
 
@@ -31,6 +32,23 @@
 
 设备有 KSU root，但 root 不改变以上硬件/系统服务缺失。
 
+## 镜像版本一致性检查
+
+使用 Azul JDK 17 执行 `sdkmanager.bat --list`。API 36.1 的系统镜像清单仅包含 `google_apis`、`google_apis_playstore`、`android-wear-signed` 及 16 KB page-size 变体，没有 `system-images;android-36.1;default;x86_64`。
+
+本机两份可比较镜像的构建身份如下：
+
+| 字段 | AOSP default x86_64 | Google APIs x86_64 |
+| --- | --- | --- |
+| SDK 路径 | `android-36/default/x86_64` | `android-36.1/google_apis/x86_64` |
+| fingerprint | `Android/sdk_phone64_x86_64/emu64x:16/BE2A.250530.026.D1/13818094:userdebug/test-keys` | `google/sdk_gphone64_x86_64/emu64xa:16/BE4B.251210.005/14574095:userdebug/dev-keys` |
+| `sdk_full` | `36.0` | `36.1` |
+| incremental | `13818094` | `14574095` |
+| 安全补丁 | `2025-07-05` | `2026-01-05` |
+| native bridge | `0` | `libndk_translation.so` |
+
+fingerprint、build ID、incremental、产品身份与系统版本均不同。因此没有复制 system/framework/native bridge 文件，也没有把可写系统删包变体作为干净镜像。一次删包变体在重启或 `-wipe-data` 后恢复预装包；另一次变体发生 `libandroid_servers.so`/`broadcastradio_TunerCallback` JNI 注册崩溃。只有未修改系统分区的原始 AVD 参与下面的复验。
+
 ## 纯 AOSP x86_64：microG 独立 Binder 基线
 
 ### 创建与启动
@@ -38,6 +56,7 @@
 ```powershell
 $Sdk = "$env:LOCALAPPDATA\Android\Sdk"
 $Adb = "$Sdk\platform-tools\adb.exe"
+$WorkDir = '<WORKDIR>'
 
 & "$Sdk\cmdline-tools\latest\bin\sdkmanager.bat" `
   'system-images;android-36;default;x86_64'
@@ -56,9 +75,9 @@ $Adb = "$Sdk\platform-tools\adb.exe"
 
 ```powershell
 & $Adb -s emulator-5556 install -r `
-  C:\tmp\stage0-apks\com.google.android.gms-250932030.apk
+  "$WorkDir\stage0-apks\com.google.android.gms-250932030.apk"
 & $Adb -s emulator-5556 install -r `
-  C:\tmp\stage0-apks\com.android.vending-84022630.apk
+  "$WorkDir\stage0-apks\com.android.vending-84022630.apk"
 ```
 
 两次均返回 `Success`。系统分配：
@@ -69,13 +88,13 @@ $Adb = "$Sdk\platform-tools\adb.exe"
 
 ### synthetic client
 
-调用方位于临时目录 `C:\tmp\stage0-identity-client`，为纯 Java/AIDL debug APK，不含 native 库。AIDL 原样取自冻结 microG tag，并保留 Apache-2.0 文件头。
+调用方位于 `<WORKDIR>\stage0-identity-client`，为纯 Java/AIDL debug APK，不含 native 库。AIDL 原样取自冻结 microG tag，并保留 Apache-2.0 文件头。
 
 构建：
 
 ```powershell
-& C:\Users\34404\.jdks\azul-17.0.18\bin\java.exe `
-  -classpath C:\Users\34404\.gradle\wrapper\dists\gradle-9.5.0-bin\bvnork1r7n8i6kp5cnkibsc9q\gradle-9.5.0\lib\gradle-launcher-9.5.0.jar `
+& "$env:JAVA_HOME\bin\java.exe" `
+  -classpath '<GRADLE_9_5_HOME>\lib\gradle-launcher-9.5.0.jar' `
   org.gradle.launcher.GradleMain :app:assembleDebug --no-daemon
 ```
 
@@ -83,7 +102,7 @@ $Adb = "$Sdk\platform-tools\adb.exe"
 
 ```powershell
 & $Adb -s emulator-5556 install -r `
-  C:\tmp\stage0-identity-client\app\build\outputs\apk\debug\app-debug.apk
+  "$WorkDir\stage0-identity-client\app\build\outputs\apk\debug\app-debug.apk"
 & $Adb -s emulator-5556 logcat -c
 & $Adb -s emulator-5556 shell am start -n `
   io.github.community.gtp.stage0.identity/.MainActivity
@@ -134,27 +153,29 @@ $Adb = "$Sdk\platform-tools\adb.exe"
 & $Adb -s emulator-5556 shell getprop ro.product.cpu.abilist
 & $Adb -s emulator-5556 shell getprop ro.dalvik.vm.native.bridge
 & $Adb -s emulator-5556 install-multiple `
-  C:\tmp\mushoku-jp-1.0.8\jp.gree_ent.mushoku-828343.apk `
-  C:\tmp\mushoku-jp-1.0.8\jp.gree_ent.mushoku-828343-config.arm64_v8a.apk
+  "$WorkDir\mushoku-jp-1.0.8\jp.gree_ent.mushoku-828343.apk" `
+  "$WorkDir\mushoku-jp-1.0.8\jp.gree_ent.mushoku-828343-config.arm64_v8a.apk"
 ```
 
 观测为 `x86_64`、native bridge `0`，安装返回 `INSTALL_FAILED_NO_MATCHING_ABIS`。这使纯 AOSP AVD 无法执行目标游戏 0B。
 
-## Google APIs x86_64：目标运行能力但镜像污染
+## Google APIs 36.1 x86_64：目标运行能力但 microG 冲突
 
-API 36.1 Google APIs 镜像报告：
+创建全新 `gtp-stage0-googleapis36-pristine` AVD，以 `-wipe-data -no-snapshot` 启动且不修改系统分区。启动完成后观测：
 
+- fingerprint `google/sdk_gphone64_x86_64/emu64xa:16/BE4B.251210.005/14574095:userdebug/dev-keys`；
+- `sys.boot_completed=1`、`service check package=found`、`sys.system_server.start_count=1`；
 - `abilist=x86_64,arm64-v8a`；
-- `ro.dalvik.vm.native.bridge=libndk_translation.so`。
+- `ro.dalvik.vm.native.bridge=libndk_translation.so`；
+- GMS 路径 `/product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk`，versionCode `253434038`；
+- GSF 路径 `/system_ext/priv-app/GoogleServicesFramework/GoogleServicesFramework.apk`；
+- Vending 路径 `/product/app/LicenseChecker/LicenseChecker.apk`，versionCode `1801`。
 
-目标原版 base + arm64 split 安装成功，Unity 进程以系统 UID `10226` 启动。这只证明官方 native bridge 能运行该 arm64 输入。
+冻结输入摘要再次计算并匹配本文开头。目标 base + arm64 split 执行 `adb install-multiple` 返回 `Success`；冻结 GMS 安装返回 `INSTALL_FAILED_VERSION_DOWNGRADE`，冻结 Vending 安装返回 `INSTALL_FAILED_UPDATE_INCOMPATIBLE: Existing package com.android.vending signatures do not match newer version`。未使用 `-d`、卸载系统包、重签名或任何覆盖检查参数。
 
-该镜像预装：
+启动 `jp.gree_ent.mushoku/com.unity3d.player.UnityPlayerActivity` 返回 `Status: ok`，目标进程 PID `5973`、系统 UID `10226`。`/proc/5973/maps` 同时包含目标 arm64 `libunity.so`、`libil2cpp.so` 与 `/system/lib64/libndk_translation.so` 及其代理库；日志出现 `IL2CPP: JNI_OnLoad`。顶层界面随后变为目标自身的 `com.pairip.licensecheck.LicenseActivity`。
 
-- `/product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk`；
-- `/product/app/LicenseChecker/LicenseChecker.apk`。
-
-安装冻结 GMS 返回 `INSTALL_FAILED_VERSION_DOWNGRADE`；即使允许降级，系统签名和特权包身份也与 microG 冲突。因此没有在该镜像继续安装或混用 microG，目标启动日志不参与 GMS 身份判定。
+这只证明官方 native bridge 能加载目标原版 arm64 输入并到达 PAIRIP 许可页。冻结 microG 未能安装，故目标没有调用未修改 Vending；该日志不参与 microG Binder/PM 身份判定，也不证明许可证或游戏完整运行。
 
 ## ARM64 AVD
 
@@ -164,12 +185,17 @@ API 36.1 Google APIs 镜像报告：
 FATAL | Avd's CPU Architecture 'arm64' is not supported by the QEMU2 emulator on x86_64 host.
 ```
 
-## 当前停止结论
+## 当前结论与用途
 
-目前没有一个 AVD 同时满足：
+目前没有一个已复现 AVD 同时满足：
 
 1. 无预装 Google 包冲突；
 2. 未修改 microG 可按冻结摘要安装；
-3. 目标原版 arm64 split 可安装并启动。
+3. 目标原版 arm64 split 可安装并启动；
+4. system/framework/native bridge 来自同一构建。
 
-所以 Stage 0 身份闸门仍未完成。继续需要“纯 AOSP + 可重现 arm64 native bridge”镜像或 ARM64 主机/设备上的干净完整 Android 系统，然后由目标游戏本身调用未修改 Vending，取得服务端 calling UID/PID、PM UID/签名、Provider、AIDL 和回调证据。
+官方 SDK 仓库没有纯 AOSP 36.1 x86_64；AOSP 36.0 与 Google APIs 36.1 的 fingerprint 和系统版本不同，禁止拼接。原始 Google APIs AVD 已复验目标启动与 microG 安装冲突；可写系统删包变体不可复现且不参与结论。
+
+因此，这组 AVD 记录不能让目标游戏的 Stage 0 身份闸门通过：目标没有在同一环境进入未修改 Vending，服务端 calling UID/PID、PM UID/签名、Provider、AIDL 与回调证据没有组合产生。但它仍提供两个独立对照：纯 AOSP 的完整系统 Binder/Provider/PM 基线，以及官方 native bridge 加载原版 arm64 Unity/IL2CPP 的执行基线。
+
+该限制只终止“把这两份 AVD 拼成一次目标 Stage 0”的尝试，不停止其他机制实验。后续分别进入容器契约改造、GMS 检测面验证和 Root + LSPosed Hook 验证；不得再把 OCR 旁路当作主路线或身份闸门的替代。

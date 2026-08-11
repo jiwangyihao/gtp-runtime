@@ -1,0 +1,157 @@
+{
+  "schema": "gtp.experiment.installer-attribution.v1",
+  "status": "completed-local-mechanism-evidence",
+  "scope": {
+    "claim": "在固定设备、游戏版本、账号、GMS/Play 环境和网络条件下，安装会话中的 installerPackageName 可重复控制当前观察到的 PAIRIP 初始启动分支。",
+    "doesNotClaim": [
+      "官方 Google Play 安装已完成",
+      "Play ownership 已取得",
+      "许可证或 Play Integrity 已通过",
+      "容器已经实现该语义",
+      "游戏可长期运行",
+      "游戏已完成翻译"
+    ]
+  },
+  "target": {
+    "packageName": "jp.gree_ent.mushoku",
+    "versionCode": 828343,
+    "versionName": "1.0.8",
+    "baseSha256": "50f7dbb7e4c53eb056b1732596298cf4bd70f432da6f4a7d666b4e9edcd724ed",
+    "arm64SplitSha256": "51ccee61fccd3d6f1d309a74503dcde36e0f2e6e936bd2b8fec7627f1fe46b76"
+  },
+  "environment": {
+    "device": "<redacted-root-arm64-device>",
+    "root": "KernelSU",
+    "account": "<redacted-existing-google-account>",
+    "networkFixture": "<redacted-local-http-proxy-via-adb-reverse>",
+    "controlledConstants": [
+      "同一设备与系统",
+      "同一已登录 Google 环境",
+      "同一网络连通性夹具",
+      "同一 APK 字节与签名",
+      "每次条件切换均卸载并重新安装",
+      "每次启动前清空应用数据并冷启动"
+    ]
+  },
+  "treatments": {
+    "A": {
+      "name": "plain-sideload",
+      "installSession": "adb install-multiple",
+      "installerPackageName": null,
+      "initiatingPackageName": "com.android.shell",
+      "packageSource": 1
+    },
+    "B": {
+      "name": "installer-attributed-session",
+      "installSession": "adb install-multiple -i com.android.vending",
+      "installerPackageName": "com.android.vending",
+      "initiatingPackageName": "com.android.shell",
+      "packageSource": 1
+    }
+  },
+  "runs": [
+    {
+      "id": "A2",
+      "treatment": "A",
+      "installedHashesMatched": true,
+      "licenseActivityObserved": true,
+      "playRejectionObserved": true,
+      "gameAliveAt30Seconds": false,
+      "unityForegroundAt30Seconds": false,
+      "screenshot": {
+        "name": "A2-plain-current.png",
+        "sha256": "0225736e84b6b9c5029e1f8812c4770cf3904313e35760dcda05b2d01f033344",
+        "storedInRepository": false
+      }
+    },
+    {
+      "id": "B2",
+      "treatment": "B",
+      "installedHashesMatched": true,
+      "licenseActivityObserved": false,
+      "playRejectionObserved": false,
+      "gameAliveAt30Seconds": true,
+      "unityForegroundAt30Seconds": false,
+      "uiInterference": "系统通知权限界面遮挡前台",
+      "observedServiceEvents": [
+        "LicenseClient connected",
+        "licensing reporting request sent",
+        "Games account resolved",
+        "Games authorization observed",
+        "game discovery and run events observed"
+      ],
+      "screenshot": {
+        "name": "B2-installer-attributed.png",
+        "sha256": "573d2b3a44797ba12b5b6bc48c4cf53e47e92ce13b326019edb6b4d8736a7002",
+        "storedInRepository": false
+      }
+    },
+    {
+      "id": "A3",
+      "treatment": "A",
+      "installedHashesMatched": true,
+      "licenseActivityObserved": true,
+      "playRejectionObserved": true,
+      "gameAliveAt30Seconds": false,
+      "unityForegroundAt30Seconds": false,
+      "screenshot": {
+        "name": "A3-plain-restored.png",
+        "sha256": "b9c6290595885e13302ee46b1b420851ddcf1da1607f40d1563a89b76be4991d",
+        "storedInRepository": false
+      }
+    },
+    {
+      "id": "B3",
+      "treatment": "B",
+      "installedHashesMatched": true,
+      "licenseActivityObserved": false,
+      "playRejectionObserved": false,
+      "gameAliveAt30Seconds": true,
+      "unityForegroundAt30Seconds": true,
+      "observedServiceEvents": [
+        "LicenseClient connected",
+        "licensing reporting request sent",
+        "Games account resolved",
+        "Games authorization observed",
+        "game discovery and run events observed"
+      ],
+      "screenshot": {
+        "name": "B3-installer-attributed.png",
+        "sha256": "f36c6794ebfd78e443a331fd15744844aeaeec1e95c9d2e977f43a76bb509191",
+        "storedInRepository": false
+      }
+    },
+    {
+      "id": "A4",
+      "treatment": "A",
+      "installedHashesMatched": true,
+      "licenseActivityObserved": true,
+      "playRejectionObserved": true,
+      "gameAliveAt30Seconds": false,
+      "unityForegroundAt30Seconds": false,
+      "screenshot": {
+        "name": "A4-final-plain.png",
+        "sha256": "968e1574ad41a04624c649178d13c434bcfffc1edd9e8ff87af108b6cbd73925",
+        "storedInRepository": false
+      }
+    }
+  ],
+  "repeatability": {
+    "sequence": ["A", "B", "A", "B", "A"],
+    "plainRunsRejected": 3,
+    "attributedRunsRejected": 0,
+    "attributedRunsKeptGameAlive": 2,
+    "attributedRunsReachedUnityForeground": 1
+  },
+  "finalRollback": {
+    "targetInstallRestoredTo": "plain-sideload",
+    "installerPackageName": null,
+    "initiatingPackageName": "com.android.shell",
+    "packageSource": 1,
+    "installedHashesMatched": true,
+    "gameStopped": true,
+    "playStopped": true,
+    "adbReverseRemoved": true,
+    "globalHttpProxy": null
+  }
+}

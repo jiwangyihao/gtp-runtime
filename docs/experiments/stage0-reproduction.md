@@ -14,7 +14,7 @@
 $javaHome = $env:JAVA_HOME
 $sdk = if ($env:ANDROID_HOME) { $env:ANDROID_HOME } else { $env:ANDROID_SDK_ROOT }
 if (-not $javaHome -or -not $sdk) { throw '请先设置 JAVA_HOME 和 ANDROID_HOME（或 ANDROID_SDK_ROOT）' }
-$stage0ApkDir = 'C:\tmp\stage0-apks'
+$stage0ApkDir = '<WORKDIR>\stage0-apks'
 $apksigner = Join-Path $sdk 'build-tools\36.1.0\apksigner.bat'
 $aapt = Join-Path $sdk 'build-tools\36.1.0\aapt.exe'
 $vendingApk = Join-Path $stage0ApkDir 'com.android.vending-84022630.apk'
