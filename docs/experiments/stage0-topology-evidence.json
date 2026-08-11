@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "captured_at_utc": "2026-08-11T02:26:03Z",
+  "carrier": {
+    "kind": "isolated VirtualApp14 carrier spike",
+    "commit": "0f9165454ef78c7be65ae06a69ec5ac0536a770e",
+    "aar": {
+      "path": "app/sdk/lib-release.aar",
+      "sha256": "f771063365c06a07995ad5c5fe003a2bbc3d1511a37132264dd8212503dd123e"
+    }
+  },
+  "source_evidence": [
+    {
+      "path": "lib/src/main/java/com/lody/virtual/client/VClient.java",
+      "sha256": "e8656a23935204c6c20ba02c97a97c629fd77ba844dcac5d02c8adab288e43b4",
+      "lines": "265-269",
+      "excerpt": [
+        "public void initProcess(ClientConfig clientConfig) {",
+        "    if (this.clientConfig != null) {",
+        "        throw new RuntimeException(\"reject init process: \" + clientConfig.processName + \", this process is : \" + this.clientConfig.processName);",
+        "    }",
+        "    this.clientConfig = clientConfig;"
+      ],
+      "observation": "一个 stub 进程已有 clientConfig 后，VClient.initProcess 会拒绝第二个 ClientConfig。"
+    },
+    {
+      "path": "lib/src/main/java/com/lody/virtual/server/am/VActivityManagerService.java",
+      "sha256": "89233db8ae52f41c59f3a64395beed91899414205a8fb12caee8661aefb34555",
+      "lines": "539-585",
+      "excerpt": [
+        "int vuid = VUserHandle.getUid(userId, ps.appId);",
+        "app = mProcessNames.get(processName, vuid);",
+        "app = new ProcessRecord(info, processName, vuid, vpid, callingUid, is64bit);",
+        "mProcessNames.put(app.processName, app.vuid, app);"
+      ],
+      "observation": "startProcessIfNeedLocked 从包设置派生 vuid，并以 processName 与 vuid 的组合查找、保存 ProcessRecord。"
+    }
+  ],
+  "observed_guest_principals": {
+    "target": {
+      "package": "jp.gree_ent.mushoku",
+      "process": "jp.gree_ent.mushoku",
+      "virtual_uid": 10002
+    },
+    "vending": {
+      "package": "com.android.vending",
+      "process": "com.android.vending",
+      "virtual_uid": 10004
+    }
+  },
+  "stage0a": {
+    "executed": false,
+    "status": "topology_not_executable",
+    "server_binder_identity_observed": false,
+    "reason": "The frozen carrier routes target and Vending under different (processName, virtualUid) records and rejects a second ClientConfig in an initialized stub. Co-locating the unmodified packages therefore requires changing the carrier process model rather than configuration-only setup.",
+    "scope": "This is code evidence about the frozen carrier only. It is not a failed Binder identity observation and not a general Android conclusion."
+  }
+}

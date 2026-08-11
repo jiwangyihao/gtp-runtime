@@ -3,6 +3,8 @@
 ## 文档状态
 
 本文固化已经确认的前置约束、实验和停止条件。它不是实现规格，也不决定最终模块目录、fork、subtree、vendor 或依赖引入方式。
+> 2026-08-11 状态：当前 VirtualApp/AAR 基座的 Stage 0 未通过。0A 拓扑不可执行；0B 在未修改 Vending 返回 Binder 前因 Provider 路由错误而未建立服务连接，未取得服务端 `Binder.getCallingUid/Pid()`，故身份不可判定。按决策树第 4 项保持 blocked，不把当前结果归入“0A、0B 均失败”。详见 `docs/experiments/stage0-result.md`。
+
 
 ## 目标
 

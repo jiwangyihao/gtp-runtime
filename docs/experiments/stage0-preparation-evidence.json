@@ -1,0 +1,15 @@
+{
+  "start_returncode": 0,
+  "start_stdout": "Starting: Intent { cmp=com.carlos.multiapp/com.carlos.gtp.ProbeLaunchActivity (has extras) }",
+  "lines": [
+    "08-11 10:27:44.552 27030 27030 I GtpCarrierProbe: GTP_STAGE0_PREPARE_BEGIN pid=27030 hostUid=10379 stageDir=/storage/emulated/0/Android/data/com.carlos.multiapp/files/stage0",
+    "08-11 10:27:44.664 27030 27030 I GtpCarrierProbe: GTP_STAGE0_APK_INPUT pid=27030 package=com.google.android.gms path=/storage/emulated/0/Android/data/com.carlos.multiapp/files/stage0/com.google.android.gms-250932030.apk bytes=105948577 sha256=52597e77fd25fdd347574d0457ed1936a4b9561cf4c8d34e7ac8dd8191dfd4b9 expected=52597e77fd25fdd347574d0457ed1936a4b9561cf4c8d34e7ac8dd8191dfd4b9 match=true",
+    "08-11 10:27:45.279 27030 27030 I GtpCarrierProbe: GTP_STAGE0_INSTALL_RESULT pid=27030 package=com.google.android.gms resultPackage=com.google.android.gms status=5 flags=0",
+    "08-11 10:27:45.285 27030 27030 I GtpCarrierProbe: GTP_STAGE0_APK_INPUT pid=27030 package=com.android.vending path=/storage/emulated/0/Android/data/com.carlos.multiapp/files/stage0/com.android.vending-84022630.apk bytes=4639851 sha256=a973e0235a2829773a4faf36d235d5f703d1c04a2adff674ebaa535a2e78f937 expected=a973e0235a2829773a4faf36d235d5f703d1c04a2adff674ebaa535a2e78f937 match=true",
+    "08-11 10:27:45.311 27030 27030 I GtpCarrierProbe: GTP_STAGE0_INSTALL_RESULT pid=27030 package=com.android.vending resultPackage=com.android.vending status=5 flags=0",
+    "08-11 10:27:45.314 27030 27030 I GtpCarrierProbe: GTP_STAGE0_VPM_PACKAGE pid=27030 package=com.google.android.gms installed=true virtualUid=10003 appInfoUid=10003 packagesForUid=[com.google.android.gms] process=com.google.android.gms source=/data/user/0/com.carlos.multiapp/virtual/data/app/com.google.android.gms/base.apk signatureSha256=f0fd6c5b410f25cb25c3b53346c8972fae30f8ee7411df910480ad6b2d60db83",
+    "08-11 10:27:45.316 27030 27030 I GtpCarrierProbe: GTP_STAGE0_VPM_PACKAGE pid=27030 package=com.android.vending installed=true virtualUid=10004 appInfoUid=10004 packagesForUid=[com.android.vending] process=com.android.vending source=/data/user/0/com.carlos.multiapp/virtual/data/app/com.android.vending/base.apk signatureSha256=f0fd6c5b410f25cb25c3b53346c8972fae30f8ee7411df910480ad6b2d60db83",
+    "08-11 10:27:45.318 27030 27030 I GtpCarrierProbe: GTP_STAGE0_RESOLVE pid=27030 action=com.android.vending.licensing.ILicensingService resolved=com.android.vending/.licensing.LicensingService:uid=10004:process=com.android.vending:permission=com.android.vending.CHECK_LICENSE count=1 entries=[com.android.vending/.licensing.LicensingService:uid=10004:process=com.android.vending:permission=com.android.vending.CHECK_LICENSE]",
+    "08-11 10:27:45.318 27030 27030 I GtpCarrierProbe: GTP_STAGE0_PREPARE_END pid=27030"
+  ]
+}

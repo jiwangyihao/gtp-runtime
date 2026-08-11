@@ -1,0 +1,133 @@
+{
+  "captured_at_utc": "2026-08-11T02:26:03Z",
+  "iterations": 3,
+  "all_bind_returned_true": true,
+  "any_connected": false,
+  "any_call_sent": false,
+  "any_license_callback": false,
+  "runs": [
+    {
+      "iteration": 1,
+      "start_returncode": 0,
+      "start_stdout": "Starting: Intent { cmp=com.carlos.multiapp/com.carlos.gtp.ProbeLaunchActivity }",
+      "connected_observed": false,
+      "call_sent_observed": false,
+      "license_callback_observed": false,
+      "process_snapshot_after_7s": [
+        "10379 25024  1667 com.carlos.multiapp",
+        "10379 25088  1667 com.carlos.multiapp:va_core",
+        "10379 25181  1667 jp.gree_ent.mushoku"
+      ],
+      "relevant_logs": [
+        "08-11 10:25:39.600  2394  3265 I ActivityManager: Start proc 25181:com.carlos.multiapp:p0/u0a379 for content provider {com.carlos.multiapp/com.lody.virtual.client.stub.ShadowContentProvider$P0} caller=com.carlos.multiapp",
+        "08-11 10:25:40.037 25181 25181 I HV-VClient: Binding application jp.gree_ent.mushoku (jp.gree_ent.mushoku [25181])",
+        "08-11 10:25:40.124 25181 25181 I GtpCarrierProbe: GTP_CARRIER_GUEST_CALLBACK pid=25181 kernelUid=10002 guestPackage=jp.gree_ent.mushoku guestProcess=jp.gree_ent.mushoku virtualUid=10002",
+        "08-11 10:25:40.237  2394  3265 I ActivityManager: Start proc 25263:com.carlos.multiapp:p1/u0a379 for content provider {com.carlos.multiapp/com.lody.virtual.client.stub.ShadowContentProvider$P1} caller=com.carlos.multiapp",
+        "08-11 10:25:40.243 25181 25181 I GtpCarrierProbe: GTP_STAGE0_GUEST_IDENTITY pid=25181 kernelUid=10002 trigger=afterApplicationCreate contextPackage=jp.gree_ent.mushoku targetAppInfoUid=10002 packagesForKernelUid=[jp.gree_ent.mushoku] packagesForTargetUid=[jp.gree_ent.mushoku] targetSignatureSha256=1cba3db0e2ec409155182f6ad5017eca136286e34ce04b0706eb22431229713d resolved=com.android.vending/.licensing.LicensingService:uid=10004:process=com.android.vending queryCount=1",
+        "08-11 10:25:40.759  2394  3265 I ActivityManager: Start proc 25297:com.carlos.multiapp:p2/u0a379 for content provider {com.carlos.multiapp/com.lody.virtual.client.stub.ShadowContentProvider$P2} caller=com.carlos.multiapp",
+        "08-11 10:25:41.257 25181 25181 I GtpCarrierProbe: GTP_STAGE0_GUEST_BIND_RESULT pid=25181 kernelUid=10002 virtualUid=10002 bound=true",
+        "08-11 10:25:41.300 25297 25297 I HV-VClient: Binding application com.android.vending (com.android.vending [25297])",
+        "08-11 10:25:41.621  2394  3265 I ActivityManager: Start proc 25368:com.carlos.multiapp:p3/u0a379 for content provider {com.carlos.multiapp/com.lody.virtual.client.stub.ShadowContentProvider$P3} caller=com.carlos.multiapp",
+        "08-11 10:25:42.653 25368 25379 E DatabaseUtils: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:42.654 25297 25297 W ProfileManager: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:42.654 25297 25297 W ProfileManager: \tat com.android.vending.licensing.LicensingService.onBind(Unknown Source:5)",
+        "08-11 10:25:42.660 25368 25379 E DatabaseUtils: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:42.661 25297 25297 E AndroidRuntime: Process: com.android.vending, PID: 25297",
+        "08-11 10:25:42.661 25297 25297 E AndroidRuntime: java.lang.RuntimeException: Unable to bind to service com.lody.virtual.client.stub.ShadowService$P2@c846cb5 with Intent { typ=bind_service_25181_1_com.android.vending|com.android.vending.licensing.LicensingService xflg=0x4 cmp=com.carlos.multiapp/com.lody.virtual.client.stub.ShadowService$P2 (has extras) }: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:42.661 25297 25297 E AndroidRuntime: Caused by: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:42.661 25297 25297 E AndroidRuntime: \tat com.android.vending.licensing.LicensingService.onBind(Unknown Source:23)",
+        "08-11 10:25:42.661 25297 25297 E uncaught: java.lang.RuntimeException: Unable to bind to service com.lody.virtual.client.stub.ShadowService$P2@c846cb5 with Intent { typ=bind_service_25181_1_com.android.vending|com.android.vending.licensing.LicensingService xflg=0x4 cmp=com.carlos.multiapp/com.lody.virtual.client.stub.ShadowService$P2 (has extras) }: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:42.661 25297 25297 E uncaught: Caused by: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:42.661 25297 25297 E uncaught: \tat com.android.vending.licensing.LicensingService.onBind(Unknown Source:23)"
+      ],
+      "client_guest_view_log": "08-11 10:25:40.243 25181 25181 I GtpCarrierProbe: GTP_STAGE0_GUEST_IDENTITY pid=25181 kernelUid=10002 trigger=afterApplicationCreate contextPackage=jp.gree_ent.mushoku targetAppInfoUid=10002 packagesForKernelUid=[jp.gree_ent.mushoku] packagesForTargetUid=[jp.gree_ent.mushoku] targetSignatureSha256=1cba3db0e2ec409155182f6ad5017eca136286e34ce04b0706eb22431229713d resolved=com.android.vending/.licensing.LicensingService:uid=10004:process=com.android.vending queryCount=1",
+      "client_bind_result_log": "08-11 10:25:41.257 25181 25181 I GtpCarrierProbe: GTP_STAGE0_GUEST_BIND_RESULT pid=25181 kernelUid=10002 virtualUid=10002 bound=true",
+      "provider_route_uid_mismatch_observed": true
+    },
+    {
+      "iteration": 2,
+      "start_returncode": 0,
+      "start_stdout": "Starting: Intent { cmp=com.carlos.multiapp/com.carlos.gtp.ProbeLaunchActivity }",
+      "connected_observed": false,
+      "call_sent_observed": false,
+      "license_callback_observed": false,
+      "process_snapshot_after_7s": [
+        "10379 25591  1667 com.carlos.multiapp",
+        "10379 25626  1667 com.carlos.multiapp:va_core",
+        "10379 25695  1667 jp.gree_ent.mushoku"
+      ],
+      "relevant_logs": [
+        "08-11 10:25:47.827  2394  3265 I ActivityManager: Start proc 25695:com.carlos.multiapp:p0/u0a379 for content provider {com.carlos.multiapp/com.lody.virtual.client.stub.ShadowContentProvider$P0} caller=com.carlos.multiapp",
+        "08-11 10:25:48.273 25695 25695 I HV-VClient: Binding application jp.gree_ent.mushoku (jp.gree_ent.mushoku [25695])",
+        "08-11 10:25:48.345 25695 25695 I GtpCarrierProbe: GTP_CARRIER_GUEST_CALLBACK pid=25695 kernelUid=10002 guestPackage=jp.gree_ent.mushoku guestProcess=jp.gree_ent.mushoku virtualUid=10002",
+        "08-11 10:25:48.446 25695 25695 I GtpCarrierProbe: GTP_STAGE0_GUEST_IDENTITY pid=25695 kernelUid=10002 trigger=afterApplicationCreate contextPackage=jp.gree_ent.mushoku targetAppInfoUid=10002 packagesForKernelUid=[jp.gree_ent.mushoku] packagesForTargetUid=[jp.gree_ent.mushoku] targetSignatureSha256=1cba3db0e2ec409155182f6ad5017eca136286e34ce04b0706eb22431229713d resolved=com.android.vending/.licensing.LicensingService:uid=10004:process=com.android.vending queryCount=1",
+        "08-11 10:25:48.451  2394  3265 I ActivityManager: Start proc 25773:com.carlos.multiapp:p1/u0a379 for content provider {com.carlos.multiapp/com.lody.virtual.client.stub.ShadowContentProvider$P1} caller=com.carlos.multiapp",
+        "08-11 10:25:48.984  2394  3265 I ActivityManager: Start proc 25806:com.carlos.multiapp:p2/u0a379 for content provider {com.carlos.multiapp/com.lody.virtual.client.stub.ShadowContentProvider$P2} caller=com.carlos.multiapp",
+        "08-11 10:25:49.508 25695 25695 I GtpCarrierProbe: GTP_STAGE0_GUEST_BIND_RESULT pid=25695 kernelUid=10002 virtualUid=10002 bound=true",
+        "08-11 10:25:49.564 25806 25806 I HV-VClient: Binding application com.android.vending (com.android.vending [25806])",
+        "08-11 10:25:49.887  2394  3265 I ActivityManager: Start proc 25955:com.carlos.multiapp:p3/u0a379 for content provider {com.carlos.multiapp/com.lody.virtual.client.stub.ShadowContentProvider$P3} caller=com.carlos.multiapp",
+        "08-11 10:25:50.959 25955 25964 E DatabaseUtils: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:50.960 25806 25806 W ProfileManager: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:50.960 25806 25806 W ProfileManager: \tat com.android.vending.licensing.LicensingService.onBind(Unknown Source:5)",
+        "08-11 10:25:50.965 25955 25964 E DatabaseUtils: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:50.966 25806 25806 E AndroidRuntime: Process: com.android.vending, PID: 25806",
+        "08-11 10:25:50.966 25806 25806 E AndroidRuntime: java.lang.RuntimeException: Unable to bind to service com.lody.virtual.client.stub.ShadowService$P2@c846cb5 with Intent { typ=bind_service_25695_1_com.android.vending|com.android.vending.licensing.LicensingService xflg=0x4 cmp=com.carlos.multiapp/com.lody.virtual.client.stub.ShadowService$P2 (has extras) }: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:50.966 25806 25806 E AndroidRuntime: Caused by: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:50.966 25806 25806 E AndroidRuntime: \tat com.android.vending.licensing.LicensingService.onBind(Unknown Source:23)",
+        "08-11 10:25:50.966 25806 25806 E uncaught: java.lang.RuntimeException: Unable to bind to service com.lody.virtual.client.stub.ShadowService$P2@c846cb5 with Intent { typ=bind_service_25695_1_com.android.vending|com.android.vending.licensing.LicensingService xflg=0x4 cmp=com.carlos.multiapp/com.lody.virtual.client.stub.ShadowService$P2 (has extras) }: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:50.966 25806 25806 E uncaught: Caused by: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:50.966 25806 25806 E uncaught: \tat com.android.vending.licensing.LicensingService.onBind(Unknown Source:23)"
+      ],
+      "client_guest_view_log": "08-11 10:25:48.446 25695 25695 I GtpCarrierProbe: GTP_STAGE0_GUEST_IDENTITY pid=25695 kernelUid=10002 trigger=afterApplicationCreate contextPackage=jp.gree_ent.mushoku targetAppInfoUid=10002 packagesForKernelUid=[jp.gree_ent.mushoku] packagesForTargetUid=[jp.gree_ent.mushoku] targetSignatureSha256=1cba3db0e2ec409155182f6ad5017eca136286e34ce04b0706eb22431229713d resolved=com.android.vending/.licensing.LicensingService:uid=10004:process=com.android.vending queryCount=1",
+      "client_bind_result_log": "08-11 10:25:49.508 25695 25695 I GtpCarrierProbe: GTP_STAGE0_GUEST_BIND_RESULT pid=25695 kernelUid=10002 virtualUid=10002 bound=true",
+      "provider_route_uid_mismatch_observed": true
+    },
+    {
+      "iteration": 3,
+      "start_returncode": 0,
+      "start_stdout": "Starting: Intent { cmp=com.carlos.multiapp/com.carlos.gtp.ProbeLaunchActivity }",
+      "connected_observed": false,
+      "call_sent_observed": false,
+      "license_callback_observed": false,
+      "process_snapshot_after_7s": [
+        "10379 26174  1667 com.carlos.multiapp",
+        "10379 26211  1667 com.carlos.multiapp:va_core",
+        "10379 26296  1667 jp.gree_ent.mushoku"
+      ],
+      "relevant_logs": [
+        "08-11 10:25:56.287  2394  3265 I ActivityManager: Start proc 26296:com.carlos.multiapp:p0/u0a379 for content provider {com.carlos.multiapp/com.lody.virtual.client.stub.ShadowContentProvider$P0} caller=com.carlos.multiapp",
+        "08-11 10:25:56.690 26296 26296 I HV-VClient: Binding application jp.gree_ent.mushoku (jp.gree_ent.mushoku [26296])",
+        "08-11 10:25:56.765 26296 26296 I GtpCarrierProbe: GTP_CARRIER_GUEST_CALLBACK pid=26296 kernelUid=10002 guestPackage=jp.gree_ent.mushoku guestProcess=jp.gree_ent.mushoku virtualUid=10002",
+        "08-11 10:25:56.827  2394  3265 I ActivityManager: Start proc 26349:com.carlos.multiapp:p1/u0a379 for content provider {com.carlos.multiapp/com.lody.virtual.client.stub.ShadowContentProvider$P1} caller=com.carlos.multiapp",
+        "08-11 10:25:56.869 26296 26296 I GtpCarrierProbe: GTP_STAGE0_GUEST_IDENTITY pid=26296 kernelUid=10002 trigger=afterApplicationCreate contextPackage=jp.gree_ent.mushoku targetAppInfoUid=10002 packagesForKernelUid=[jp.gree_ent.mushoku] packagesForTargetUid=[jp.gree_ent.mushoku] targetSignatureSha256=1cba3db0e2ec409155182f6ad5017eca136286e34ce04b0706eb22431229713d resolved=com.android.vending/.licensing.LicensingService:uid=10004:process=com.android.vending queryCount=1",
+        "08-11 10:25:57.363  2394  3265 I ActivityManager: Start proc 26387:com.carlos.multiapp:p2/u0a379 for content provider {com.carlos.multiapp/com.lody.virtual.client.stub.ShadowContentProvider$P2} caller=com.carlos.multiapp",
+        "08-11 10:25:57.862 26296 26296 I GtpCarrierProbe: GTP_STAGE0_GUEST_BIND_RESULT pid=26296 kernelUid=10002 virtualUid=10002 bound=true",
+        "08-11 10:25:57.897 26387 26387 I HV-VClient: Binding application com.android.vending (com.android.vending [26387])",
+        "08-11 10:25:58.191  2394  3265 I ActivityManager: Start proc 26537:com.carlos.multiapp:p3/u0a379 for content provider {com.carlos.multiapp/com.lody.virtual.client.stub.ShadowContentProvider$P3} caller=com.carlos.multiapp",
+        "08-11 10:25:59.276 26537 26549 E DatabaseUtils: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:59.277 26387 26387 W ProfileManager: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:59.277 26387 26387 W ProfileManager: \tat com.android.vending.licensing.LicensingService.onBind(Unknown Source:5)",
+        "08-11 10:25:59.282 26537 26549 E DatabaseUtils: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:59.283 26387 26387 E AndroidRuntime: Process: com.android.vending, PID: 26387",
+        "08-11 10:25:59.283 26387 26387 E AndroidRuntime: java.lang.RuntimeException: Unable to bind to service com.lody.virtual.client.stub.ShadowService$P2@c846cb5 with Intent { typ=bind_service_26296_1_com.android.vending|com.android.vending.licensing.LicensingService xflg=0x4 cmp=com.carlos.multiapp/com.lody.virtual.client.stub.ShadowService$P2 (has extras) }: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:59.283 26387 26387 E AndroidRuntime: Caused by: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:59.283 26387 26387 E AndroidRuntime: \tat com.android.vending.licensing.LicensingService.onBind(Unknown Source:23)",
+        "08-11 10:25:59.283 26387 26387 E uncaught: java.lang.RuntimeException: Unable to bind to service com.lody.virtual.client.stub.ShadowService$P2@c846cb5 with Intent { typ=bind_service_26296_1_com.android.vending|com.android.vending.licensing.LicensingService xflg=0x4 cmp=com.carlos.multiapp/com.lody.virtual.client.stub.ShadowService$P2 (has extras) }: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:59.283 26387 26387 E uncaught: Caused by: java.lang.SecurityException: Calling uid: 10004 doesn't match source uid: 10379",
+        "08-11 10:25:59.283 26387 26387 E uncaught: \tat com.android.vending.licensing.LicensingService.onBind(Unknown Source:23)"
+      ],
+      "client_guest_view_log": "08-11 10:25:56.869 26296 26296 I GtpCarrierProbe: GTP_STAGE0_GUEST_IDENTITY pid=26296 kernelUid=10002 trigger=afterApplicationCreate contextPackage=jp.gree_ent.mushoku targetAppInfoUid=10002 packagesForKernelUid=[jp.gree_ent.mushoku] packagesForTargetUid=[jp.gree_ent.mushoku] targetSignatureSha256=1cba3db0e2ec409155182f6ad5017eca136286e34ce04b0706eb22431229713d resolved=com.android.vending/.licensing.LicensingService:uid=10004:process=com.android.vending queryCount=1",
+      "client_bind_result_log": "08-11 10:25:57.862 26296 26296 I GtpCarrierProbe: GTP_STAGE0_GUEST_BIND_RESULT pid=26296 kernelUid=10002 virtualUid=10002 bound=true",
+      "provider_route_uid_mismatch_observed": true
+    }
+  ],
+  "schema": 2,
+  "identity_gate_status": "indeterminate_service_not_connected",
+  "server_binder_identity_observed": false,
+  "field_notes": {
+    "kernelUid_in_raw_probe_logs": "This label contains the guest-visible, VirtualApp-hooked Process.myUid() value. It is not an observed Linux Kernel Identity.",
+    "provider_route_uid_mismatch": "The SecurityException occurred while unmodified Vending initialized a microG settings Provider. It is not a LicensingService Binder.getCallingUid/Pid observation.",
+    "bind_returned_true": "The container accepted the bind request; onServiceConnected was never observed."
+  },
+  "all_provider_route_uid_mismatch_observed": true
+}
